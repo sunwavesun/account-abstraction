@@ -549,6 +549,11 @@
   resolved "https://registry.yarnpkg.com/@fastify/busboy/-/busboy-2.0.0.tgz#f22824caff3ae506b18207bad4126dbc6ccdb6b8"
   integrity sha512-JUFJad5lv7jxj926GPgymrWQxxjPYuJNiNjNMzqT+HiuP6Vl3dk5xzG+8sTX96np0ZAluvaMzPsjhHZ5rNuNQQ==
 
+"@gnosis.pm/safe-singleton-factory@^1.0.14":
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/@gnosis.pm/safe-singleton-factory/-/safe-singleton-factory-1.0.14.tgz#42dae9a91fda21b605f94bfe310a7fccc6a4d738"
+  integrity sha512-xZ26c9uKzpd5Sm8ux0sZHt5QC8n+Q2z1/X5xjPnd8aT5EcKH5t1GgLbAqjrMFmXVIOkiWSc7wi2Bj4XfgtiyaQ==
+
 "@humanwhocodes/config-array@^0.11.11":
   version "0.11.11"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.11.11.tgz#88a04c570dbbc7dd943e4712429c3df09bc32844"

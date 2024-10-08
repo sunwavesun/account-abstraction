@@ -10,6 +10,8 @@ artifacts
 /deployments/dev/
 /deployments/localhost/
 /deployments/proxy/
+/deployments/hmy_localnet
+/deployments/hmy_testnet
 /typechain-types/
 /reports/gas-used-output.color
 /coverage

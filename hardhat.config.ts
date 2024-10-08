@@ -7,6 +7,9 @@ import '@nomiclabs/hardhat-etherscan'
 import 'solidity-coverage'
 
 import * as fs from 'fs'
+import { DeterministicDeploymentInfo } from 'hardhat-deploy/dist/types'
+import { getSingletonFactoryInfo } from '@gnosis.pm/safe-singleton-factory'
+import { BigNumber } from 'ethers'
 
 const SALT = '0x90d8084deab30c2a37c45e8d47f49f2f7965183cb6990a98943ef94940681de3'
 process.env.SALT = process.env.SALT ?? SALT
@@ -38,6 +41,24 @@ const optimizedComilerSettings = {
   }
 }
 
+const deterministicDeployment = (network: string): DeterministicDeploymentInfo => {
+  const info = getSingletonFactoryInfo(parseInt(network))
+  if (info === undefined) {
+    throw new Error(`
+      Safe factory not found for network ${network}. You can request a new deployment at https://github.com/safe-global/safe-singleton-factory.
+      For more information, see https://github.com/safe-global/safe-smart-account#replay-protection-eip-155
+    `)
+  }
+  return {
+    factory: info.address,
+    deployer: info.signerAddress,
+    funding: BigNumber.from(info.gasLimit)
+      .mul(BigNumber.from(info.gasPrice))
+      .toString(),
+    signedTx: info.transaction
+  }
+}
+
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
 
@@ -60,7 +81,23 @@ const config: HardhatUserConfig = {
     localgeth: { url: 'http://localgeth:8545' },
     goerli: getNetwork('goerli'),
     sepolia: getNetwork('sepolia'),
-    proxy: getNetwork1('http://localhost:8545')
+    proxy: getNetwork1('http://localhost:8545'),
+    hmy_mainnet: {
+      url: 'https://api.s0.t.hmny.io',
+      chainId: 1666600000
+    },
+    hmy_testnet: {
+      url: 'https://api.s0.b.hmny.io',
+      chainId: 1666700000
+    },
+    hmy_localnet: {
+      url: 'http://localhost:9500',
+      chainId: 1666700000,
+      live: false,
+      // localnet account solely for testing purpose specified in:
+      // https://github.com/harmony-one/harmony/blob/dev/core/genesis.go#L137
+      accounts: ['1f84c95ac16e6a50f08d44c7bde7aff8742212fda6e4321fde48bf83bef266dc']
+    }
   },
   mocha: {
     timeout: 10000
@@ -68,8 +105,8 @@ const config: HardhatUserConfig = {
   // @ts-ignore
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY
-  }
-
+  },
+  deterministicDeployment
 }
 
 // coverage chokes on the "compilers" settings
